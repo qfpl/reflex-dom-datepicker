@@ -18,20 +18,20 @@ let
       mkdir -p $out
 
       mkdir -p $out/js
-      cp $out/bin/reflex-dom-datepicker.jsexe/all.js $out/js/reflex-dom-datepicker.js
+      cp $out/bin/examples.jsexe/all.js $out/js/examples.js
 
       mkdir -p $out/css
       ln -s ./css/* $out/css
 
-      ln -s $out/bin/reflex-dom-datepicker.jsexe/index.html $out/index.html
+      ln -s $out/bin/examples.jsexe/index.html $out/index.html
 
-      cd $out/bin/reflex-dom-datepicker.jsexe
-      closure-compiler all.js --compilation_level=ADVANCED_OPTIMIZATIONS --isolation_mode=IIFE --assume_function_wrapper --jscomp_off="*" --externs=all.js.externs > $out/js/reflex-dom-datepicker.min.js
-      rm -Rf $out/bin/reflex-dom-datepicker.jsexe
+      cd $out/bin/examples.jsexe
+      closure-compiler all.js --compilation_level=ADVANCED_OPTIMIZATIONS --isolation_mode=IIFE --assume_function_wrapper --jscomp_off="*" --externs=all.js.externs > $out/js/examples.min.js
+      rm -Rf $out/bin/examples.jsexe
       rm -Rf $out/bin
 
       cd $out/js
-      zopfli -i1000 reflex-dom-datepicker.min.js
+      zopfli -i1000 examples.min.js
 
       rm -Rf $out/lib
       rm -Rf $out/nix-support
