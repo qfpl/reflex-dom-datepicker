@@ -10,7 +10,9 @@ mkDerivation {
   libraryHaskellDepends = [
     base containers ghcjs-dom jsaddle lens reflex reflex-dom text time
   ];
-  executableHaskellDepends = [ base reflex reflex-dom text time ];
+  executableHaskellDepends = [
+    base reflex reflex-dom text time lens
+  ];
   description = "A date picker UI widget for the reflex FRP platform";
   license = stdenv.lib.licenses.bsd3;
 }
