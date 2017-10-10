@@ -9,12 +9,10 @@ import qualified Reflex                                   as R
 import qualified Reflex.Dom                               as RD
 
 import qualified Reflex.Dom.Widget.Input.Datepicker       as D
-import qualified Reflex.Dom.Widget.Input.Datepicker.Style as D
 import           Reflex.Dom.Widget.Input.Datepicker.Types as D
 
 import           Data.Function                            ((&))
 
-import           Data.Maybe                               (fromMaybe)
 import qualified Data.Text                                as Text
 
 import qualified Data.Time                                as Time

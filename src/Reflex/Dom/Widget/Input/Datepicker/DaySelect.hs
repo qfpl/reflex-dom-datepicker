@@ -49,5 +49,5 @@ dayList tLoc dayFmt dayAttrs dayWrap dayListWrap dDaysInMonth =
       )
     )
 
--- TODO dayList :: Dynamic t [Day]
+-- TODO dayList :: ... -> Dynamic t [Day]
 -- For selecting a range of days

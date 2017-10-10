@@ -5,22 +5,14 @@
 {-# LANGUAGE RecursiveDo           #-}
 module Reflex.Dom.Widget.Input.Datepicker
   ( datePickerSimple
+  , datePickerDateInput
   , simpleDateInputConfig
-  , defaultDateFormat
-  , defaultDayFormat
-  , DateInput          (..)
-  , DateInputConfig    (..)
-  , Wrap (..)
   ) where
 
-import           Control.Applicative                          (liftA3)
-import           Control.Lens                                 (Lens', to, (.~),
-                                                               (^.))
+import           Control.Lens                                 (to, (^.))
 
-import           Reflex                                       (Event, Reflex,
-                                                               (<@))
-import           Reflex.Dom                                   (MonadWidget,
-                                                               (=:))
+import           Reflex                                       (Reflex, Event, Dynamic)
+import           Reflex.Dom                                   (MonadWidget)
 
 import qualified Reflex                                       as R
 import qualified Reflex.Dom                                   as RD
@@ -31,11 +23,7 @@ import           Reflex.Dom.Widget.Input.Datepicker.DaySelect as RDPDaySelect
 import           Reflex.Dom.Widget.Input.Datepicker.Style     as RDPStyle
 import           Reflex.Dom.Widget.Input.Datepicker.Types     as RDPTypes
 
-import           Data.Function                                ((&))
-import           Data.Text                                    (Text)
-
-import           Data.Time                                    (Day)
-import qualified Data.Time                                    as Time
+import           Data.Time                                    (Day, fromGregorian)
 import           Data.Time.Format                             (TimeLocale)
 
 simpleDateInputConfig
@@ -43,7 +31,7 @@ simpleDateInputConfig
   => TimeLocale
   -> DateInputConfig t
 simpleDateInputConfig tL = DateInputConfig
-  (Time.fromGregorian 1970 1 1)
+  (fromGregorian 1970 1 1)
   defaultDateFormat
   defaultDayFormat
   tL
@@ -55,6 +43,25 @@ simpleDateInputConfig tL = DateInputConfig
   "<<"
   ">>"
 
+datePickerDateInput
+  :: ( Reflex t
+     )
+  => Event t Day
+  -> DatePickerControls t
+  -> Dynamic t Day
+  -> DateInput t
+datePickerDateInput eDaySetValue ctrl dDayValue = DateInput
+  dDayValue
+  (ctrl ^. dateControls_textInput . RD.textInput_input)
+  (ctrl ^. dateControls_textInput . RD.textInput_keypress)
+  (ctrl ^. dateControls_textInput . RD.textInput_keydown)
+  (ctrl ^. dateControls_textInput . RD.textInput_keyup)
+  (ctrl ^. dateControls_textInput . RD.textInput_hasFocus)
+  (ctrl ^. dateControls_textInput . to RD._textInput_element)
+  eDaySetValue
+  (ctrl ^. dateControls_ePrevMonth)
+  (ctrl ^. dateControls_eNextMonth)
+
 datePickerSimple
   :: MonadWidget t m
   => DateInputConfig t
@@ -62,20 +69,17 @@ datePickerSimple
 datePickerSimple dateInpCfg =
   wrapEl RDPStyle.datePickerWrap $ mdo
   let
-    initialVal  = dateInpCfg ^. dateInputConfig_initialValue
-    initialDays = daysInMonth initialVal
-    fmtDt       = fmtDate dateInpCfg
-    pDate       = parseDateWith
-                  (dateInpCfg ^. dateInputConfig_timelocale)
-                  (dateInpCfg ^. dateInputConfig_dateFormat)
+    pDate = parseDateWith
+      (dateInpCfg ^. dateInputConfig_timelocale)
+      (dateInpCfg ^. dateInputConfig_dateFormat)
 
     eDateSetVal = R.leftmost
       [ dateInpCfg ^. dateInputConfig_setValue
       , eDaySelect
       ]
 
-  (dDayValue, dDaysInMonth) <- RDPCore.mkDatePickerCore $
-    RDPTypes.DatePickerCore pDate initialVal
+  (dDayValue, dDaysInMonth) <- RDPCore.mkDatePickerCore $ RDPTypes.DatePickerCore pDate
+    (dateInpCfg ^. dateInputConfig_initialValue)
     (dateCtrl ^. dateControls_textInput . RD.textInput_input)
     eDateSetVal
     (dateCtrl ^. dateControls_ePrevMonth)
@@ -93,13 +97,4 @@ datePickerSimple dateInpCfg =
     RDPStyle.dayListWrap
     dDaysInMonth
 
-  return $ DateInput dDayValue
-    (dateCtrl ^. dateControls_textInput . RD.textInput_input)
-    (dateCtrl ^. dateControls_textInput . RD.textInput_keypress)
-    (dateCtrl ^. dateControls_textInput . RD.textInput_keydown)
-    (dateCtrl ^. dateControls_textInput . RD.textInput_keyup)
-    (dateCtrl ^. dateControls_textInput . RD.textInput_hasFocus)
-    (dateCtrl ^. dateControls_textInput . to RD._textInput_element)
-    eDaySelect
-    (dateCtrl ^. dateControls_ePrevMonth )
-    (dateCtrl ^. dateControls_eNextMonth )
+  pure $ datePickerDateInput eDateSetVal dateCtrl dDayValue

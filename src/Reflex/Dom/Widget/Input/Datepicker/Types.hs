@@ -6,7 +6,7 @@
 {-# LANGUAGE TypeFamilies           #-}
 module Reflex.Dom.Widget.Input.Datepicker.Types where
 
-import           Control.Lens               (Lens', Rewrapped, Unwrapped,
+import           Control.Lens               (Rewrapped, Unwrapped,
                                              makeWrapped, (^.), makeLenses,
                                              _Wrapped)
 

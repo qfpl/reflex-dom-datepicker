@@ -8,12 +8,10 @@ import           Control.Lens                             ((^.))
 
 import           Control.Monad.Fix                        (MonadFix)
 
-import           Reflex                                   (Dynamic, Event,
+import           Reflex                                   (Dynamic,
                                                            MonadHold, Reflex, (<@))
 import qualified Reflex                                   as R
 
-import           Data.Text                                (Text)
-import           Data.Time                                (TimeLocale)
 import           Data.Time.Calendar                       (Day)
 
 import           Reflex.Dom.Widget.Input.Datepicker.Types as RDPTypes

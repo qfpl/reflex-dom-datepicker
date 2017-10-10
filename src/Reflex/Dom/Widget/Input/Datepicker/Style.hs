@@ -18,7 +18,7 @@ import           Data.Map                                 (Map)
 import           Data.Text                                (Text)
 
 import           Reflex.Dom.Widget.Input.Datepicker.Types (ControlW,
-                                                           DatePickerW, DateW,
+                                                           DatePickerW,
                                                            DayListW, DayW,
                                                            Wrap (..))
 
