@@ -44,5 +44,10 @@ dayList tLoc dayFmt dayAttrs dayWrap dayListWrap dDaysInMonth =
   R.switch . R.current . fmap R.leftmost <$>
     wrapEl dayListWrap
     ( RD.simpleList dDaysInMonth
-      ( wrapEl dayWrap . dayDynEl tLoc dayFmt dayAttrs )
+      ( wrapEl dayWrap
+        . dayDynEl tLoc dayFmt dayAttrs
+      )
     )
+
+-- TODO dayList :: Dynamic t [Day]
+-- For selecting a range of days
