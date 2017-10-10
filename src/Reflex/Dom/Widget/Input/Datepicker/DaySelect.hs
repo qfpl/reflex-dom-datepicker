@@ -36,13 +36,13 @@ dayList
   => TimeLocale
   -> DayFormat
   -> Dynamic t (Map Text Text)
-  -> DayWrapper t m
-  -> DayListWrapper t m
+  -> Wrap DayW t m
+  -> Wrap DayListW t m
   -> Dynamic t [Day]
   -> m (Event t Day)
 dayList tLoc dayFmt dayAttrs dayWrap dayListWrap dDaysInMonth =
   R.switch . R.current . fmap R.leftmost <$>
-    wrapDayList dayListWrap
+    wrapEl dayListWrap
     ( RD.simpleList dDaysInMonth
-      ( wrapDay dayWrap . dayDynEl tLoc dayFmt dayAttrs )
+      ( wrapEl dayWrap . dayDynEl tLoc dayFmt dayAttrs )
     )

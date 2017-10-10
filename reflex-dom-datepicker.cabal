@@ -13,6 +13,10 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Reflex.Dom.Widget.Input.Datepicker
+                     , Reflex.Dom.Widget.Input.Datepicker.Style
+                     , Reflex.Dom.Widget.Input.Datepicker.Core
+                     , Reflex.Dom.Widget.Input.Datepicker.DaySelect
+                     , Reflex.Dom.Widget.Input.Datepicker.Types
   -- other-modules:       
   -- other-extensions:    
   build-depends:       base >=4.9 && <4.10

@@ -9,13 +9,11 @@ module Reflex.Dom.Widget.Input.Datepicker
   , defaultDateFormat
   , defaultDayFormat
   , DateInput          (..)
-  , HasDateInput       (..)
   , DateInputConfig    (..)
-  , HasDateInputConfig (..)
-  , DayListWrapper     (..)
-  , DayWrapper         (..)
+  , Wrap (..)
   ) where
 
+import           Control.Applicative                          (liftA3)
 import           Control.Lens                                 (Lens', to, (.~),
                                                                (^.))
 
@@ -27,13 +25,16 @@ import           Reflex.Dom                                   (MonadWidget,
 import qualified Reflex                                       as R
 import qualified Reflex.Dom                                   as RD
 
+import           Reflex.Dom.Widget.Input.Datepicker.Controls  as RDPControls
 import           Reflex.Dom.Widget.Input.Datepicker.Core      as RDPCore
 import           Reflex.Dom.Widget.Input.Datepicker.DaySelect as RDPDaySelect
+import           Reflex.Dom.Widget.Input.Datepicker.Style     as RDPStyle
 import           Reflex.Dom.Widget.Input.Datepicker.Types     as RDPTypes
 
 import           Data.Function                                ((&))
 import           Data.Text                                    (Text)
 
+import           Data.Time                                    (Day)
 import qualified Data.Time                                    as Time
 import           Data.Time.Format                             (TimeLocale)
 
@@ -41,91 +42,64 @@ simpleDateInputConfig
   :: Reflex t
   => TimeLocale
   -> DateInputConfig t
-simpleDateInputConfig tL =
-  let
-    noAttrs = R.constDyn mempty
-    dayAttrs = pure ("class" =: "day-item")
-  in
-    DateInputConfig
-    (Time.fromGregorian 1970 1 1)
-    defaultDateFormat
-    defaultDayFormat
-    tL
-    R.never
-    noAttrs dayAttrs noAttrs
-    "<<" ">>"
-
-moveMthBtn
-  :: ( MonadWidget t m
-     , HasDateInputConfig d t
-     )
-  => d
-  -> Lens' d Text
-  -> m (Event t ())
-moveMthBtn cfg l = RD.elDynAttr "div"
-  (cfg ^. dateInputConfig_mthBtnAttrs)
-  (RD.button $ cfg ^. l)
+simpleDateInputConfig tL = DateInputConfig
+  (Time.fromGregorian 1970 1 1)
+  defaultDateFormat
+  defaultDayFormat
+  tL
+  R.never
+  RDPStyle.textInputAttrs
+  RDPStyle.dayElAttrs
+  RDPStyle.monthButtonAttrs
+  -- I know Thufir, I'm sitting with my Text to the door...
+  "<<"
+  ">>"
 
 datePickerSimple
   :: MonadWidget t m
   => DateInputConfig t
-  -> DayListWrapper t m
-  -> DayWrapper t m
   -> m (DateInput t)
-datePickerSimple dateInpCfg dayListWrap dayWrap = mdo
+datePickerSimple dateInpCfg =
+  wrapEl RDPStyle.datePickerWrap $ mdo
   let
     initialVal  = dateInpCfg ^. dateInputConfig_initialValue
     initialDays = daysInMonth initialVal
     fmtDt       = fmtDate dateInpCfg
-    monthBtn    = moveMthBtn dateInpCfg
+    pDate       = parseDateWith
+                  (dateInpCfg ^. dateInputConfig_timelocale)
+                  (dateInpCfg ^. dateInputConfig_dateFormat)
 
-    eDateUpdate = RDPCore.datePickerCore
-      ( dateInpCfg ^. dateInputConfig_timelocale )
-      ( dateInpCfg ^. dateInputConfig_dateFormat )
-      ( tI ^. RD.textInput_input )
-      ( dateInpCfg ^. dateInputConfig_setValue )
-      ( R.current dDayValue <@ ePrevMonth )
-      ( R.current dDayValue <@ eNextMonth )
-      eDaySelect
+    eDateSetVal = R.leftmost
+      [ dateInpCfg ^. dateInputConfig_setValue
+      , eDaySelect
+      ]
 
-  dDayValue <-
-    R.holdDyn initialVal eDateUpdate
+  (dDayValue, dDaysInMonth) <- RDPCore.mkDatePickerCore $
+    RDPTypes.DatePickerCore pDate initialVal
+    (dateCtrl ^. dateControls_textInput . RD.textInput_input)
+    eDateSetVal
+    (dateCtrl ^. dateControls_ePrevMonth)
+    (dateCtrl ^. dateControls_eNextMonth)
 
-  dDaysInMonth <-
-    R.holdDyn initialDays ( daysInMonth <$> eDateUpdate )
-
-  ePrevMonth <-
-    monthBtn dateInputConfig_prevMonthLabel
-
-  tI <- RD.textInput $ RD.def
-    -- Set our initial value by formatting the given Day using the given format
-    & RD.textInputConfig_initialValue .~
-      dateInpCfg ^. dateInputConfig_initialValue . to fmtDt
-    -- Pass along the attrs we've been given
-    & RD.textInputConfig_attributes .~
-      dateInpCfg ^. dateInputConfig_textInputAttrs
-    -- Create the update Event by formatting the latest update
-    & RD.textInputConfig_setValue .~ fmap fmtDt eDateUpdate
-
-  eNextMonth <-
-    monthBtn dateInputConfig_nextMonthLabel
+  dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg
+    RDPStyle.datePickerControlsWrap
+    (R.updated dDayValue)
 
   eDaySelect <- RDPDaySelect.dayList
     (dateInpCfg ^. dateInputConfig_timelocale)
     (dateInpCfg ^. dateInputConfig_dayFormat)
     (dateInpCfg ^. dateInputConfig_dayAttrs)
-    dayWrap
-    dayListWrap
+    RDPStyle.dayElWrap
+    RDPStyle.dayListWrap
     dDaysInMonth
 
-  return $ DateInput
-    dDayValue
-    (tI ^. RD.textInput_input)
-    (tI ^. RD.textInput_keypress)
-    (tI ^. RD.textInput_keydown)
-    (tI ^. RD.textInput_keyup)
-    (tI ^. RD.textInput_hasFocus)
-    (RD._textInput_element tI)
+  return $ DateInput dDayValue
+    (dateCtrl ^. dateControls_textInput . RD.textInput_input)
+    (dateCtrl ^. dateControls_textInput . RD.textInput_keypress)
+    (dateCtrl ^. dateControls_textInput . RD.textInput_keydown)
+    (dateCtrl ^. dateControls_textInput . RD.textInput_keyup)
+    (dateCtrl ^. dateControls_textInput . RD.textInput_hasFocus)
+    (dateCtrl ^. dateControls_textInput . to RD._textInput_element)
     eDaySelect
-    ePrevMonth
-    eNextMonth
+    (dateCtrl ^. dateControls_ePrevMonth )
+    (dateCtrl ^. dateControls_eNextMonth )

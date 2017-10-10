@@ -1,64 +1,39 @@
+{-# LANGUAGE FlexibleInstances      #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses  #-}
 {-# LANGUAGE RankNTypes             #-}
 {-# LANGUAGE TemplateHaskell        #-}
-{-# LANGUAGE FlexibleInstances      #-}
 {-# LANGUAGE TypeFamilies           #-}
-module Reflex.Dom.Widget.Input.Datepicker.Types
-  ( DayWrapper (..)
-  , DayListWrapper (..)
-  , DateInput (..)
-  , DateInputConfig (..)
-  , HasDateInput (..)
-  , HasDateInputConfig (..)
-  , DayFormat (..)
-  , DateFormat (..)
-  , defaultDateFormat
-  , defaultDayFormat
-  , fmtDateWith
-  , fmtDate
-  , fmtDay
-  , parseDateWith
-  , daysInMonth
-  , nextMonth
-  , prevMonth
-  ) where
+module Reflex.Dom.Widget.Input.Datepicker.Types where
 
-import           Control.Lens (Lens', Rewrapped, Unwrapped, makeClassy,
-                               makeWrapped, (^.), _Wrapped)
+import           Control.Lens               (Lens', Rewrapped, Unwrapped,
+                                             makeWrapped, (^.), makeLenses,
+                                             _Wrapped)
 
-import           Reflex       (Dynamic, Event, Reflex)
-import           Reflex.Dom   (MonadWidget)
+import           Reflex                     (Dynamic, Event, Reflex)
+import           Reflex.Dom                 (MonadWidget, TextInput)
 
-import           Data.Map                                    (Map)
-import           Data.Text                                   (Text)
-import qualified Data.Text                                   as Text
+import           Data.Map                   (Map)
+import           Data.Text                  (Text)
+import qualified Data.Text                  as Text
 
-import qualified Data.Time                                   as Time
-import           Data.Time.Calendar                          (Day)
-import           Data.Time.Format                            (TimeLocale)
+import qualified Data.Time                  as Time
+import           Data.Time.Calendar         (Day)
+import           Data.Time.Format           (TimeLocale)
 
-import qualified GHCJS.DOM.HTMLInputElement                  as Input
+import qualified GHCJS.DOM.HTMLInputElement as Input
 
 -- This might be a nice idea to pull out
--- data Day'
--- data Date'
--- newtype Wrap a t m = Wrap
---   { wrapEl :: forall e. MonadWidget t m => m e -> m e
---   }
--- eg
--- type DayWrap = Wrap Day'
--- type DateWrap = Wrap Date'
--- therefore
--- DayWrap !~ DateWrap ?
-
-newtype DayWrapper t m = DayWrapper
-  { wrapDay :: forall a. MonadWidget t m => m a -> m a
+newtype Wrap a t m = Wrap
+  { wrapEl :: forall e. MonadWidget t m => m e -> m e
   }
 
-newtype DayListWrapper t m = DayListWrapper
-  { wrapDayList :: forall a. MonadWidget t m => m a -> m a
-  }
+data DayW
+data DayListW
+data DateW
+data ControlW
+data DatePickerW
+-- or not...
 
 newtype DateFormat = DateFormat String
   deriving (Show, Eq)
@@ -96,7 +71,7 @@ data DateInput t = DateInput
   , _dateInput_nextMonth   :: Event t () -- ^ Next month button clicked
   , _dateInput_prevMonth   :: Event t () -- ^ Prev month button clicked
   }
-makeClassy ''DateInput
+makeLenses ''DateInput
 
 data DateInputConfig t = DateInputConfig
   { _dateInputConfig_initialValue   :: Day         -- ^ Starting value
@@ -110,7 +85,24 @@ data DateInputConfig t = DateInputConfig
   , _dateInputConfig_prevMonthLabel :: Text
   , _dateInputConfig_nextMonthLabel :: Text
   }
-makeClassy ''DateInputConfig
+makeLenses ''DateInputConfig
+
+data DatePickerControls t = DatePickerControls
+  { _dateControls_ePrevMonth :: Event t ()
+  , _dateControls_textInput  :: TextInput t
+  , _dateControls_eNextMonth :: Event t ()
+  }
+makeLenses ''DatePickerControls
+
+data DatePickerCore t = DatePickerCore
+  { _dateCore_parseDate :: Text -> Maybe Day
+  , _dateCore_initValue :: Day
+  , _dateCore_textInput :: Event t Text
+  , _dateCore_setValue  :: Event t Day
+  , _dateCore_prevMonth :: Event t ()
+  , _dateCore_nextMonth :: Event t ()
+  }
+makeLenses ''DatePickerCore
 
 fmtDateWith
   :: ( Rewrapped f f
@@ -123,20 +115,15 @@ fmtDateWith
 fmtDateWith tLoc f = Text.pack
   . Time.formatTime tLoc (f ^. _Wrapped)
 
-fmtDate, fmtDay
+fmtDate
   :: ( Reflex t
-     , HasDateInputConfig d t
      )
-  => d
+  => DateInputConfig t
   -> Day
   -> Text
 fmtDate cfg = fmtDateWith
   ( cfg ^. dateInputConfig_timelocale )
   ( cfg ^. dateInputConfig_dateFormat )
-
-fmtDay cfg = fmtDateWith
-  ( cfg ^. dateInputConfig_timelocale )
-  ( cfg ^. dateInputConfig_dayFormat )
 
 parseDateWith
   :: ( Rewrapped f f

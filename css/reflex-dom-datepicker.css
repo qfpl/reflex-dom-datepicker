@@ -1,12 +1,31 @@
-.day-item {
-  margin-left: 0.3em;
-  float: left;
-  border: 1px solid #999;
+
+.contents-floated:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-.day-item:nth-child(1n+2) {}
-.day-item:nth-child(1n+3) {}
-.day-item:nth-child(1n+4) {}
-.day-item:nth-child(1n+5) {}
-.day-item:nth-child(1n+6) {}
-.day-item:nth-child(1n+7) {}
+.day-list-wrap {
+  width: 12em;
+  height: 6em;
+  padding: 2em;
+}
+
+.day-wrap {
+  float: left;
+  width: 14.28%;
+}
+
+.month-button {
+  float: left;
+}
+
+.month-button>button {
+  padding: 0.3em;
+}
+
+.date-text-input {
+  float: left;
+  width: 6em;
+  text-align: center;
+}

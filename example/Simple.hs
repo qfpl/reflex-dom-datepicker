@@ -2,20 +2,22 @@
 {-# LANGUAGE OverloadedStrings     #-}
 module Main where
 
-import           Control.Lens                       ((.~))
-import           Control.Monad                      ((>>))
+import           Control.Lens                             ((.~))
+import           Control.Monad                            ((>>))
 
-import qualified Reflex                             as R
-import qualified Reflex.Dom                         as RD
+import qualified Reflex                                   as R
+import qualified Reflex.Dom                               as RD
 
-import qualified Reflex.Dom.Widget.Input.Datepicker as D
+import qualified Reflex.Dom.Widget.Input.Datepicker       as D
+import qualified Reflex.Dom.Widget.Input.Datepicker.Style as D
+import           Reflex.Dom.Widget.Input.Datepicker.Types as D
 
-import           Data.Function                      ((&))
+import           Data.Function                            ((&))
 
-import           Data.Maybe                         (fromMaybe)
-import qualified Data.Text                          as Text
+import           Data.Maybe                               (fromMaybe)
+import qualified Data.Text                                as Text
 
-import qualified Data.Time                          as Time
+import qualified Data.Time                                as Time
 
 -- From Data.Time
 -- TimeZone
@@ -46,7 +48,6 @@ simpleDatePickerUsage
   :: RD.MonadWidget t m
   => m ()
 simpleDatePickerUsage = do
-
   -- Little page header
   RD.el "h1" $ RD.text "Simple Date Widget"
 
@@ -58,11 +59,8 @@ simpleDatePickerUsage = do
       & D.dateInputConfig_initialValue .~ Time.fromGregorian 2017 2 3
 
   -- Place the simple date picker on the page. This is a "prebaked" widget that
-  -- has a lot of the functionality built into a single component with some
-  -- flexible styling.
+  -- has a lot of the functionality built into a single component with some flexible styling.
   dateIn <- D.datePickerSimple cfg
-    ( D.DayListWrapper (RD.divClass "day-list-wrap") )
-    ( D.DayWrapper (RD.divClass "day-wrap") )
 
   dDaySelect <- R.holdDyn "No Day Clicked" $
     showDate <$> D._dateInput_daySelect dateIn
