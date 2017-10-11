@@ -6,6 +6,7 @@ module Reflex.Dom.Widget.Input.Datepicker.Controls
   , mkDatePickerControls
   ) where
 
+import Control.Applicative (liftA3)
 import           Control.Lens                             (Lens', to, (.~),
                                                            (^.))
 
@@ -32,8 +33,7 @@ import           Reflex.Dom.Widget.Input.Datepicker.Types (ControlW,
                                                            Wrap (..), fmtDate)
 
 moveMonthBtn
-  :: ( MonadWidget t m
-     )
+  :: MonadWidget t m
   => DateInputConfig t
   -> Lens' ( DateInputConfig t ) Text
   -> m (Event t ())
@@ -47,18 +47,20 @@ mkDatePickerControls
   -> Wrap ControlW t m
   -> Event t Day
   -> m (DatePickerControls t)
-mkDatePickerControls dCfg cWrap eDateUpdate = wrapEl cWrap $ do
-  ePrevMonth <- moveMonthBtn dCfg dateInputConfig_prevMonthLabel
-
-  tI <- textInput $ def
+mkDatePickerControls dCfg cWrap eDateUpdate =
+  -- Wrap up the whole bunch in an widget of some kind and package
+  -- up our control data structure with the Events and TextInput
+  wrapEl cWrap $ liftA3 DatePickerControls
+    -- Move to previous month
+    ( moveMonthBtn dCfg dateInputConfig_prevMonthLabel )
+    -- The text input for typey typey
+    ( textInput $ def
       -- Set our initial value by formatting the given Day using the given format
       & textInputConfig_initialValue .~ dCfg ^. dateInputConfig_initialValue . to ( fmtDate dCfg )
       -- Pass along the attrs we've been given
       & textInputConfig_attributes .~ dCfg ^. dateInputConfig_textInputAttrs
       -- Create the update Event by formatting the latest update
       & textInputConfig_setValue .~ fmap ( fmtDate dCfg ) eDateUpdate
-
-  eNextMonth <- moveMonthBtn dCfg dateInputConfig_nextMonthLabel
-
-  return $ DatePickerControls ePrevMonth tI eNextMonth
-
+    )
+    -- Move to next month
+    ( moveMonthBtn dCfg dateInputConfig_nextMonthLabel )

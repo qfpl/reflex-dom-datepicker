@@ -116,8 +116,7 @@ fmtDateWith tLoc f = Text.pack
   . Time.formatTime tLoc (f ^. _Wrapped)
 
 fmtDate
-  :: ( Reflex t
-     )
+  :: Reflex t
   => DateInputConfig t
   -> Day
   -> Text
@@ -136,9 +135,7 @@ parseDateWith
 parseDateWith tLoc dFmt =
   Time.parseTimeM True tLoc (dFmt ^. _Wrapped) . Text.unpack
 
-daysInMonth
-  :: Day
-  -> [Day]
+daysInMonth :: Day -> [Day]
 daysInMonth day =
   let
     (y, m, _) = Time.toGregorian day

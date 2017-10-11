@@ -46,11 +46,11 @@ simpleDateInputConfig tL = DateInputConfig
 datePickerDateInput
   :: ( Reflex t
      )
-  => Event t Day
-  -> DatePickerControls t
+  => DatePickerControls t
+  -> Event t Day
   -> Dynamic t Day
   -> DateInput t
-datePickerDateInput eDaySetValue ctrl dDayValue = DateInput
+datePickerDateInput ctrl eDaySetValue dDayValue = DateInput
   dDayValue
   (ctrl ^. dateControls_textInput . RD.textInput_input)
   (ctrl ^. dateControls_textInput . RD.textInput_keypress)
@@ -97,4 +97,7 @@ datePickerSimple dateInpCfg =
     RDPStyle.dayListWrap
     dDaysInMonth
 
-  pure $ datePickerDateInput eDateSetVal dateCtrl dDayValue
+  pure $ datePickerDateInput
+    dateCtrl
+    eDateSetVal
+    dDayValue

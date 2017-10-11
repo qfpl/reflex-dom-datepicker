@@ -8,8 +8,8 @@ import           Control.Lens                             ((^.))
 
 import           Control.Monad.Fix                        (MonadFix)
 
-import           Reflex                                   (Dynamic,
-                                                           MonadHold, Reflex, (<@))
+import           Reflex                                   (Dynamic, MonadHold,
+                                                           Reflex, (<@))
 import qualified Reflex                                   as R
 
 import           Data.Time.Calendar                       (Day)

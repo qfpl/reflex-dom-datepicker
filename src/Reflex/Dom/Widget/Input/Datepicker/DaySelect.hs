@@ -4,19 +4,18 @@ module Reflex.Dom.Widget.Input.Datepicker.DaySelect
   , dayDynEl
   ) where
 
-import           Reflex                                      (Dynamic, Event,
-                                                              (<@))
-import           Reflex.Dom                                  (MonadWidget)
+import           Reflex                                   (Dynamic, Event, (<@))
+import           Reflex.Dom                               (MonadWidget)
 
-import qualified Reflex                                      as R
-import qualified Reflex.Dom                                  as RD
+import qualified Reflex                                   as R
+import qualified Reflex.Dom                               as RD
 
 import           Reflex.Dom.Widget.Input.Datepicker.Types as RDPTypes
 
-import Data.Text (Text)
-import Data.Map (Map)
-import Data.Time (TimeLocale)
-import           Data.Time.Calendar                          (Day)
+import           Data.Map                                 (Map)
+import           Data.Text                                (Text)
+import           Data.Time                                (TimeLocale)
+import           Data.Time.Calendar                       (Day)
 
 dayDynEl
   :: MonadWidget t m
@@ -26,8 +25,8 @@ dayDynEl
   -> Dynamic t Day
   -> m (Event t Day)
 dayDynEl tLoc dFmt dAttrs dDay = do
-  (e, _) <- RD.elDynAttr' "div" dAttrs $
-    RD.dynText (fmtDateWith tLoc dFmt <$> dDay)
+  (e, _) <- RD.elDynAttr' "div" dAttrs
+    $ RD.dynText (fmtDateWith tLoc dFmt <$> dDay)
 
   pure $ R.current dDay <@ RD.domEvent RD.Click e
 
@@ -51,3 +50,6 @@ dayList tLoc dayFmt dayAttrs dayWrap dayListWrap dDaysInMonth =
 
 -- TODO dayList :: ... -> Dynamic t [Day]
 -- For selecting a range of days
+
+-- TODO Dynamic (Day -> Day -> Map Text Text)
+-- For styling the day based on the selected value
