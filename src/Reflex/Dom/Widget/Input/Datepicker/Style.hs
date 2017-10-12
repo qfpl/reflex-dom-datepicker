@@ -1,5 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE QuasiQuotes           #-}
 module Reflex.Dom.Widget.Input.Datepicker.Style
   ( monthButtonAttrs
   , dayElAttrs
@@ -10,17 +11,17 @@ module Reflex.Dom.Widget.Input.Datepicker.Style
   , datePickerControlsWrap
   ) where
 
-import           Reflex                                   (Dynamic, Reflex)
-import           Reflex.Dom                               (MonadWidget,
-                                                           divClass, (=:))
+import           Reflex                                       (Dynamic, Reflex)
+import           Reflex.Dom                                   (MonadWidget,
+                                                               divClass, (=:))
 
-import           Data.Map                                 (Map)
-import           Data.Text                                (Text)
+import           Data.Map                                     (Map)
+import           Data.Text                                    (Text)
 
-import           Reflex.Dom.Widget.Input.Datepicker.Types (ControlW,
-                                                           DatePickerW,
-                                                           DayListW, DayW,
-                                                           Wrap (..))
+import           Reflex.Dom.Widget.Input.Datepicker.Types     (ControlW,
+                                                               DatePickerW,
+                                                               DayListW, DayW,
+                                                               Wrap (..))
 
 monthButtonAttrs, dayElAttrs, textInputAttrs :: Reflex t => Dynamic t (Map Text Text)
 monthButtonAttrs = pure ("class" =: "month-button")

@@ -6,7 +6,7 @@ mkDerivation {
   version = "0.0.1.0";
   src = ./.;
   isLibrary = true;
-  isExecutable = true;
+  isExecutable = false;
   libraryHaskellDepends = [
     base containers ghcjs-dom jsaddle lens reflex reflex-dom text time
   ];

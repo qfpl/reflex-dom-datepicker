@@ -12,7 +12,6 @@ import qualified Reflex.Dom.Widget.Input.Datepicker       as D
 import           Reflex.Dom.Widget.Input.Datepicker.Types as D
 
 import           Data.Function                            ((&))
-
 import qualified Data.Text                                as Text
 
 import qualified Data.Time                                as Time
@@ -75,5 +74,4 @@ simpleDatePickerUsage = do
     RD.text "Date Value: " >> RD.dynText dDate
 
 main :: IO ()
-main = do
-  RD.mainWidget simpleDatePickerUsage
+main = RD.mainWidget simpleDatePickerUsage
