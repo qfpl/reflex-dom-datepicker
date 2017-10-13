@@ -33,6 +33,7 @@ data DayListW
 data DateW
 data ControlW
 data DatePickerW
+data MonthBtnW
 -- or not...
 
 newtype DateFormat = DateFormat String

@@ -3,6 +3,7 @@
 {-# LANGUAGE QuasiQuotes           #-}
 module Reflex.Dom.Widget.Input.Datepicker.Style
   ( monthButtonAttrs
+  , monthButtonWrap
   , dayElAttrs
   , textInputAttrs
   , dayListWrap
@@ -19,6 +20,7 @@ import           Data.Map                                     (Map)
 import           Data.Text                                    (Text)
 
 import           Reflex.Dom.Widget.Input.Datepicker.Types     (ControlW,
+                                                               MonthBtnW,
                                                                DatePickerW,
                                                                DayListW, DayW,
                                                                Wrap (..))
@@ -45,3 +47,6 @@ datePickerWrap = wrapDiv "date-picker-wrap"
 
 datePickerControlsWrap :: MonadWidget t m => Wrap ControlW t m
 datePickerControlsWrap = wrapDiv "date-picker-controls contents-floated"
+
+monthButtonWrap :: MonadWidget t m => Wrap MonthBtnW t m
+monthButtonWrap = wrapDiv "month-button"

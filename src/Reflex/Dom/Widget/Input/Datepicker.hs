@@ -71,6 +71,7 @@ datePickerSimple =
   datePickerWrappedWith
     RDPStyle.datePickerWrap
     RDPStyle.datePickerControlsWrap
+    RDPStyle.monthButtonWrap
     RDPStyle.dayElWrap
     RDPStyle.dayListWrap
 
@@ -78,11 +79,12 @@ datePickerWrappedWith
   :: MonadWidget t m
   => Wrap DatePickerW t m
   -> Wrap ControlW t m
+  -> Wrap MonthBtnW t m
   -> Wrap DayW t m
   -> Wrap DayListW t m
   -> DateInputConfig t
   -> m (DateInput t)
-datePickerWrappedWith wDP wCtrl wDay wDayList dateInpCfg =
+datePickerWrappedWith wDP wCtrl wBtn wDay wDayList dateInpCfg =
   wrapEl wDP $ mdo
   let
     pDate = parseDateWith
@@ -101,7 +103,7 @@ datePickerWrappedWith wDP wCtrl wDay wDayList dateInpCfg =
     (dateCtrl ^. dateControls_ePrevMonth)
     (dateCtrl ^. dateControls_eNextMonth)
 
-  dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg wCtrl
+  dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg wCtrl wBtn
     (R.updated dDayValue)
 
   eDaySelect <- RDPDaySelect.dayList
