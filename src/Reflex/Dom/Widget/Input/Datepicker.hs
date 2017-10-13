@@ -5,6 +5,7 @@
 {-# LANGUAGE RecursiveDo           #-}
 module Reflex.Dom.Widget.Input.Datepicker
   ( datePickerSimple
+  , datePickerWrappedWith
   , datePickerDateInput
   , simpleDateInputConfig
   ) where
@@ -66,8 +67,23 @@ datePickerSimple
   :: MonadWidget t m
   => DateInputConfig t
   -> m (DateInput t)
-datePickerSimple dateInpCfg =
-  wrapEl RDPStyle.datePickerWrap $ mdo
+datePickerSimple =
+  datePickerWrappedWith
+    RDPStyle.datePickerWrap
+    RDPStyle.datePickerControlsWrap
+    RDPStyle.dayElWrap
+    RDPStyle.dayListWrap
+
+datePickerWrappedWith
+  :: MonadWidget t m
+  => Wrap DatePickerW t m
+  -> Wrap ControlW t m
+  -> Wrap DayW t m
+  -> Wrap DayListW t m
+  -> DateInputConfig t
+  -> m (DateInput t)
+datePickerWrappedWith wDP wCtrl wDay wDayList dateInpCfg =
+  wrapEl wDP $ mdo
   let
     pDate = parseDateWith
       (dateInpCfg ^. dateInputConfig_timelocale)
@@ -85,16 +101,15 @@ datePickerSimple dateInpCfg =
     (dateCtrl ^. dateControls_ePrevMonth)
     (dateCtrl ^. dateControls_eNextMonth)
 
-  dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg
-    RDPStyle.datePickerControlsWrap
+  dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg wCtrl
     (R.updated dDayValue)
 
   eDaySelect <- RDPDaySelect.dayList
     (dateInpCfg ^. dateInputConfig_timelocale)
     (dateInpCfg ^. dateInputConfig_dayFormat)
     (dateInpCfg ^. dateInputConfig_dayAttrs)
-    RDPStyle.dayElWrap
-    RDPStyle.dayListWrap
+    wDay
+    wDayList
     dDaysInMonth
 
   pure $ datePickerDateInput
