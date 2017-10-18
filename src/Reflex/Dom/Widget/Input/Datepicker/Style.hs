@@ -19,16 +19,22 @@ import           Reflex.Dom                                   (MonadWidget,
 import           Data.Map                                     (Map)
 import           Data.Text                                    (Text)
 
+import Data.Semigroup ((<>))
+
 import           Reflex.Dom.Widget.Input.Datepicker.Types     (ControlW,
                                                                MonthBtnW,
                                                                DatePickerW,
                                                                DayListW, DayW,
                                                                Wrap (..))
 
-monthButtonAttrs, dayElAttrs, textInputAttrs :: Reflex t => Dynamic t (Map Text Text)
+monthButtonAttrs, textInputAttrs :: Reflex t => Dynamic t (Map Text Text)
 monthButtonAttrs = pure ("class" =: "month-button")
-dayElAttrs       = pure ("class" =: "day-item")
 textInputAttrs   = pure ("class" =: "date-text-input")
+
+dayElAttrs :: Reflex t => Dynamic t (Bool -> Map Text Text)
+dayElAttrs = pure (\selected ->
+                     "class" =: ( "day-item" <> if selected then " active" else "" )
+                  )
 
 wrapDiv
   :: MonadWidget t m

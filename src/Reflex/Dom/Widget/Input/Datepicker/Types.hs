@@ -81,7 +81,7 @@ data DateInputConfig t = DateInputConfig
   , _dateInputConfig_timelocale     :: TimeLocale  -- ^ This is required for formatting / parsing
   , _dateInputConfig_setValue       :: Event t Day -- ^ Fires on selecting or inputting a valid date
   , _dateInputConfig_textInputAttrs :: Dynamic t (Map Text Text)
-  , _dateInputConfig_dayAttrs       :: Dynamic t (Map Text Text)
+  , _dateInputConfig_dayAttrs       :: Dynamic t (Bool -> Map Text Text)
   , _dateInputConfig_mthBtnAttrs    :: Dynamic t (Map Text Text)
   , _dateInputConfig_prevMonthLabel :: Text
   , _dateInputConfig_nextMonthLabel :: Text

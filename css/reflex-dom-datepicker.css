@@ -16,6 +16,13 @@
   width: 14.28%;
 }
 
+.day-item {
+  background-color: lightgrey;
+}
+.day-item.active {
+  background-color: lightgreen;
+}
+
 .month-button {
   float: left;
 }

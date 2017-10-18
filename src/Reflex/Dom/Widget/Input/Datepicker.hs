@@ -106,13 +106,14 @@ datePickerWrappedWith wDP wCtrl wBtn wDay wDayList dateInpCfg =
   dateCtrl <- RDPControls.mkDatePickerControls dateInpCfg wCtrl wBtn
     (R.updated dDayValue)
 
-  eDaySelect <- RDPDaySelect.dayList
+  eDaySelect <- RDPDaySelect.mkDaySelectDisplay
     (dateInpCfg ^. dateInputConfig_timelocale)
     (dateInpCfg ^. dateInputConfig_dayFormat)
-    (dateInpCfg ^. dateInputConfig_dayAttrs)
     wDay
     wDayList
+    dDayValue
     dDaysInMonth
+    (dateInpCfg ^. dateInputConfig_dayAttrs)
 
   pure $ datePickerDateInput
     dateCtrl

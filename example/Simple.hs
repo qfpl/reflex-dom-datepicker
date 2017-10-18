@@ -62,16 +62,13 @@ simpleDatePickerUsage = do
   dDaySelect <- R.holdDyn "No Day Clicked" $
     showDate <$> D._dateInput_daySelect dateIn
 
-  dDate <- R.holdDyn "No Day Value" $
-    showDate <$> ( R.updated $ D._dateInput_value dateIn )
-
   -- Show the last day that was clicked from the list of days for the last valid date value
   RD.el "h3" $
     RD.text "Date Selected: " >> RD.dynText dDaySelect
 
   -- Show the current stored valid day value
   RD.el "h3" $
-    RD.text "Date Value: " >> RD.dynText dDate
+    RD.text "Date Value: " >> RD.dynText ( showDate <$> D._dateInput_value dateIn )
 
 main :: IO ()
 main = RD.mainWidget simpleDatePickerUsage
