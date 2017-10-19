@@ -17,8 +17,10 @@
 }
 
 .day-item {
+  cursor: pointer;
   background-color: lightgrey;
 }
+
 .day-item.active {
   background-color: lightgreen;
 }
