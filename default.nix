@@ -5,7 +5,7 @@ let
   pkgs = reflex-platform.nixpkgs.pkgs;
 
   adjust = drv: {
-    doHaddock = false;
+    doHaddock = true;
     postInstall = ''
     mkdir -p $out/css
     cp ./css/* "$out/css/"

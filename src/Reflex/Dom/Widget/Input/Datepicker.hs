@@ -27,9 +27,10 @@ import           Reflex.Dom.Widget.Input.Datepicker.Types     as RDPTypes
 import           Data.Time                                    (Day, fromGregorian)
 import           Data.Time.Format                             (TimeLocale)
 
+-- | 'DateInputConfig' with some simple defaults and using the default CSS attribute maps from 'Reflex.Dom.Widget.Datepicker.Style'
 simpleDateInputConfig
   :: Reflex t
-  => TimeLocale
+  => TimeLocale -- ^ Input TimeLocale for parsing & formatting.
   -> DateInputConfig t
 simpleDateInputConfig tL = DateInputConfig
   (fromGregorian 1970 1 1)
@@ -44,12 +45,13 @@ simpleDateInputConfig tL = DateInputConfig
   "<<"
   ">>"
 
+-- | Simple Datepicker input if you have created your own 'DatePickerControls' and 'Dynamic' for the 'Day'.
 datePickerDateInput
   :: ( Reflex t
      )
-  => DatePickerControls t
-  -> Event t Day
-  -> Dynamic t Day
+  => DatePickerControls t -- ^ Controls record: month buttons and 'TextInput'
+  -> Event t Day          -- ^ 'Day' set 'Event', if other components need to set this value at some stage
+  -> Dynamic t Day        -- ^ The 'Dynamic' for storing the current 'Day' value
   -> DateInput t
 datePickerDateInput ctrl eDaySetValue dDayValue = DateInput
   dDayValue
@@ -63,6 +65,9 @@ datePickerDateInput ctrl eDaySetValue dDayValue = DateInput
   (ctrl ^. dateControls_ePrevMonth)
   (ctrl ^. dateControls_eNextMonth)
 
+-- | The simplest and most rudamentary Datepicker implementation, wires
+-- everything up for you based only on the given configuration. Using the inbuilt
+-- default styling and wrapper functions.
 datePickerSimple
   :: MonadWidget t m
   => DateInputConfig t
@@ -75,14 +80,16 @@ datePickerSimple =
     RDPStyle.dayElWrap
     RDPStyle.dayListWrap
 
+-- | Slightly more configurable Datepicker, allowing you to provide your own
+-- wrapper functions for the various components, along with the configuration.
 datePickerWrappedWith
   :: MonadWidget t m
-  => Wrap DatePickerW t m
-  -> Wrap ControlW t m
-  -> Wrap MonthBtnW t m
-  -> Wrap DayW t m
-  -> Wrap DayListW t m
-  -> DateInputConfig t
+  => Wrap DatePickerW t m -- ^ Wrap the whole widget
+  -> Wrap ControlW t m    -- ^ Wrap the controls - 'TextInput' and both buttons
+  -> Wrap MonthBtnW t m   -- ^ Wrap the month buttons
+  -> Wrap DayW t m        -- ^ Wrap the individual 'Day' elements
+  -> Wrap DayListW t m    -- ^ Wrap the list of 'Day' elements
+  -> DateInputConfig t    -- ^ Configuration
   -> m (DateInput t)
 datePickerWrappedWith wDP wCtrl wBtn wDay wDayList dateInpCfg =
   wrapEl wDP $ mdo

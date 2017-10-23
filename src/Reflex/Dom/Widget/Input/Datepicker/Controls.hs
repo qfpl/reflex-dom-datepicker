@@ -37,11 +37,13 @@ import           Reflex.Dom.Widget.Input.Datepicker.Types (ControlW,
                                                            dateInputConfig_textInputAttrs,
                                                            fmtDate)
 
+-- | Create a button with a label from the 'DateInputConfig' via the given 'Lens''
+-- The button will be wrapped using the function from the 'MonthBtnW' wrapper.
 moveMonthBtn
   :: MonadWidget t m
-  => DateInputConfig t
-  -> Wrap MonthBtnW t m
-  -> Lens' ( DateInputConfig t ) Text
+  => DateInputConfig t                -- ^ DatePicker configuration
+  -> Wrap MonthBtnW t m               -- ^ 'MonadWidget' wrapper function
+  -> Lens' ( DateInputConfig t ) Text -- ^ Lens for getting the label from the 'DateInputConfig'
   -> m (Event t ())
 moveMonthBtn cfg bWrap l =
   let attrs = cfg ^. dateInputConfig_mthBtnAttrs
@@ -51,12 +53,28 @@ moveMonthBtn cfg bWrap l =
     wrapEl bWrap $
       elDynAttr' "button" attrs lbl >>= toEvt
 
+-- | Display the controls for the DatePicker widget:
+--
+-- Displyed in order:
+--
+-- (1) Previous month button
+--
+-- 2. Text input
+--
+-- 3. Next month button
+--
+-- Each of the month movement buttons are wrapped using the given 'MonthBtnW'
+-- function, and the entire set of controls is wrapped with the 'ControlW'
+-- wrapper function.
+--
+-- The 'DatePickerControls' is a record containing the various 'Event's and the
+-- inner configuration of the 'TextInput'.
 mkDatePickerControls
   :: MonadWidget t m
-  => DateInputConfig t
-  -> Wrap ControlW t m
-  -> Wrap MonthBtnW t m
-  -> Event t Day
+  => DateInputConfig t  -- ^ Widget configuration, containing 'Day' formats and set value 'Event's
+  -> Wrap ControlW t m  -- ^ Wrapper function for the set of controls
+  -> Wrap MonthBtnW t m -- ^ Inner wrapper function for the individual month buttons
+  -> Event t Day        -- ^ External 'Day' update 'Event', such as a 'Day' element being clicked.
   -> m (DatePickerControls t)
 mkDatePickerControls dCfg cWrap bWrap eDateUpdate =
   -- Wrap up the whole bunch in an widget of some kind and package
