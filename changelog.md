@@ -1,3 +1,9 @@
+0.0.3
+
+* Added more documentation
+* Improved README
+* Cabal file adjustments
+
 0.0.2
 
 * Added more Haddock documentation

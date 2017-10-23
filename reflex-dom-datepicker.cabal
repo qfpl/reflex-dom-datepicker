@@ -1,5 +1,5 @@
 name:                reflex-dom-datepicker
-version:             0.0.2
+version:             0.0.3
 synopsis:            A date picker UI widget for the reflex FRP platform.
 description:         A date picker widget to be used with the Reflex FRP system, either for GHC/GHCJS. Example expects GHCJS.
 license:             BSD3
