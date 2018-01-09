@@ -28,14 +28,14 @@ library
                      , Reflex.Dom.Widget.Input.Datepicker.Controls
                      , Reflex.Dom.Widget.Input.Datepicker.DaySelect
                      , Reflex.Dom.Widget.Input.Datepicker.Types
+                     , Reflex.Dom.Widget.Basic.SelectViews
 
   build-depends:       base >=4.9 && <4.10
                      , text >= 1.2 && < 1.3
                      , reflex >= 0.5 && < 0.6
                      , reflex-dom >= 0.4 && < 0.5
+                     , ghcjs-dom 
                      , lens
-                     , jsaddle
-                     , ghcjs-dom
                      , containers == 0.5.*
                      , time == 1.6.*
 
@@ -62,3 +62,7 @@ executable             examples
                      , reflex-dom-datepicker
                      , lens
                      , time == 1.6.*
+  if !impl(ghcjs -any)
+    build-depends:
+                  jsaddle-warp
+                , reflex-dom-core

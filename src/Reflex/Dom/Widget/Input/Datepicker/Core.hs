@@ -40,6 +40,7 @@ mkDatePickerCore
 mkDatePickerCore dpCore =
   -- Turn our Day in to (Day, [Day])
   fmap (id &&& fmap daysInMonth)
+  -- Use the goodness of foldDyn to package up the modifications to our widget "state".
   . R.foldDyn ($) (dpCore ^. dateCore_initValue) $ R.mergeWith (.)
     [ prevMonth <$  _dateCore_prevMonth dpCore
     , nextMonth <$  _dateCore_nextMonth dpCore

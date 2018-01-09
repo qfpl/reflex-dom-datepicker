@@ -20,7 +20,7 @@ import qualified Data.Time                  as Time
 import           Data.Time.Calendar         (Day)
 import           Data.Time.Format           (TimeLocale)
 
-import qualified GHCJS.DOM.HTMLInputElement as Input
+import           GHCJS.DOM.HTMLInputElement (HTMLInputElement)
 
 -- | Simple newtype with a phantom type 'a', to make it easier to specify which
 -- wrapper function it contains.
@@ -70,7 +70,7 @@ data DateInput t = DateInput
   , _dateInput_keydown     :: Event t Word           -- ^ Key down in 'TextInput'
   , _dateInput_keyup       :: Event t Word           -- ^ Key up in 'TextInput'
   , _dateInput_hasFocus    :: Dynamic t Bool         -- ^ If the 'TextInput' has focus
-  , _dateInput_textElement :: Input.HTMLInputElement -- ^ The 'HTMLInputElement' of the 'TextInput'
+  , _dateInput_textElement :: HTMLInputElement -- ^ The 'HTMLInputElement' of the 'TextInput'
   -- Widget mouse/touch actions:
   , _dateInput_daySelect   :: Event t Day            -- ^ Day clicked
   , _dateInput_nextMonth   :: Event t ()             -- ^ Next month button clicked

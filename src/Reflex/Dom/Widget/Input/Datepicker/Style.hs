@@ -31,11 +31,11 @@ monthButtonAttrs, textInputAttrs :: Reflex t => Dynamic t (Map Text Text)
 -- | Default attributes for the month movement button: div class="month-button"
 monthButtonAttrs = pure ("class" =: "month-button")
 
--- | Attributes for the @TextInput@: div class="date-text-input"
+-- | Attributes for the 'TextInput': div class="date-text-input"
 textInputAttrs   = pure ("class" =: "date-text-input")
 
 -- | Default attribute function for the individual @Day@ elements, provides a function
--- @ _ :: Bool -> Map Text Text @
+-- 'Bool -> Map Text Text'
 --
 -- * True -> class="day-item active"
 --

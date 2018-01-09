@@ -47,7 +47,7 @@ moveMonthBtn
   -> m (Event t ())
 moveMonthBtn cfg bWrap l =
   let attrs = cfg ^. dateInputConfig_mthBtnAttrs
-      lbl = text (cfg ^. l)
+      lbl   = text (cfg ^. l)
       toEvt = return . domEvent RD.Click . fst
   in
     wrapEl bWrap $
@@ -77,11 +77,14 @@ mkDatePickerControls
   -> Event t Day        -- ^ External 'Day' update 'Event', such as a 'Day' element being clicked.
   -> m (DatePickerControls t)
 mkDatePickerControls dCfg cWrap bWrap eDateUpdate =
+
   -- Wrap up the whole bunch in an widget of some kind and package
   -- up our control data structure with the Events and TextInput
   wrapEl cWrap $ liftA3 DatePickerControls
+
     -- Move to previous month
     ( moveMonthBtn dCfg bWrap dateInputConfig_prevMonthLabel )
+
     -- The text input for typey typey
     ( textInput $ def
       -- Set our initial value by formatting the given Day using the given format
@@ -91,5 +94,6 @@ mkDatePickerControls dCfg cWrap bWrap eDateUpdate =
       -- Create the update Event by formatting the latest update
       & textInputConfig_setValue .~ fmap ( fmtDate dCfg ) eDateUpdate
     )
+
     -- Move to next month
     ( moveMonthBtn dCfg bWrap dateInputConfig_nextMonthLabel )

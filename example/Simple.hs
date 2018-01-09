@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP                   #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 module Main where
@@ -16,6 +17,12 @@ import qualified Data.Text                                as Text
 
 import qualified Data.Time                                as Time
 
+#ifndef ghcjs_HOST_OS
+import           Language.Javascript.JSaddle.Warp         (run)
+import           Reflex.Dom.Core                          (mainWidget)
+-- import Util.Run
+#endif
+
 -- From Data.Time
 -- TimeZone
 --     timeZoneMinutes :: Int     -- ^ Number of minutes offset from UTC. Positive means local time will be later in the day than UTC.
@@ -33,7 +40,7 @@ import qualified Data.Time                                as Time
 aust :: Time.TimeLocale
 aust = Time.defaultTimeLocale
   { Time.dateTimeFmt = Time.iso8601DateFormat (Just "%H:%M:%S")
-  , Time.dateFmt = Time.iso8601DateFormat Nothing
+  , Time.dateFmt     = Time.iso8601DateFormat Nothing
   , Time.knownTimeZones =
     [ Time.TimeZone 600 False "AEST"
     , Time.TimeZone (9 * 60 + 30) False "ACST"
@@ -46,7 +53,8 @@ simpleDatePickerUsage
   => m ()
 simpleDatePickerUsage = do
   -- Little page header
-  RD.el "h1" $ RD.text "Simple Date Widget"
+  RD.el "h1"
+    $ RD.text "Simple Date Widget"
 
   let
     showDate =
@@ -71,4 +79,10 @@ simpleDatePickerUsage = do
     RD.text "Date Value: " >> RD.dynText ( showDate <$> D._dateInput_value dateIn )
 
 main :: IO ()
-main = RD.mainWidget simpleDatePickerUsage
+main =
+#ifdef ghcjs_HOST_OS
+  RD.mainWidget simpleDatePickerUsage
+#else
+  run 9999 $ mainWidget simpleDatePickerUsage
+#endif
+

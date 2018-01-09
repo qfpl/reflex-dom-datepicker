@@ -30,7 +30,23 @@ The datepicker modules provide three primary pieces of the underlying widget:
 - Controls : The input controls for a datepicker, two buttons to move forward and backward, as well as the embedded ``TextInput`` specialised for a ``Day`` type.
 - DaySelect : Display a list of ``Day`` values and provide an ``Event`` when one of them is clicked.
 
-Related blog posts:
+#### Building the Example
+
+There is a simple example page included with this package.
+
+To build when on NixOS **recommended**:
+```bash
+$ nix-build examples.nix
+```
+
+When in a ``./try-reflex`` shell from [reflex-platform](https://github.com/reflex-frp/reflex-platform):
+```bash
+$ cabal new-build
+```
+
+The normal ``cabal build`` should work as well, when in the ``try-reflex`` shell.
+
+#### Related blog posts:
 
 - [Part 1](https://blog.qfpl.io/posts/reflex/widget/growing-a-date-picker-1/)
 - [Part 2](https://blog.qfpl.io/posts/reflex/widget/growing-a-date-picker-2/)
