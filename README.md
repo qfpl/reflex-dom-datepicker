@@ -34,7 +34,7 @@ The datepicker modules provide three primary pieces of the underlying widget:
 
 There is a simple example page included with this package.
 
-To build when on NixOS **recommended**:
+To build when on NixOS:
 ```bash
 $ nix-build examples.nix
 ```
