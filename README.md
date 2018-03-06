@@ -1,3 +1,5 @@
+<img src="http://i.imgur.com/0h9dFhl.png" width="300px"/>
+
 # Reflex Dom Date Picker
 
 This is a date picker widget, built using [reflex](https://github.com/reflex-frp/reflex) and [reflex-dom](https://github.com/reflex-frp/reflex-dom).
