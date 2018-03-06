@@ -1,3 +1,4 @@
+-- | This is the beating heart of the datepicker widget.
 module Reflex.Dom.Widget.Input.Datepicker.Core
   ( mkDatePickerCore
   ) where

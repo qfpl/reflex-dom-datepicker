@@ -4,6 +4,7 @@
 {-# LANGUAGE RankNTypes             #-}
 {-# LANGUAGE TemplateHaskell        #-}
 {-# LANGUAGE TypeFamilies           #-}
+-- | Core types for the DatePicker widget
 module Reflex.Dom.Widget.Input.Datepicker.Types where
 
 import           Control.Lens               (Rewrapped, Unwrapped, makeLenses,

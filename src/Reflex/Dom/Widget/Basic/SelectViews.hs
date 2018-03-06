@@ -1,5 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RankNTypes            #-}
+-- | Some helper functions for building lists of selectable items. These are not
+-- specific to the datepicker and may be moved out at a later stage.
 module Reflex.Dom.Widget.Basic.SelectViews
   ( selectViewListWithKeyDynAttr
   , selectViewListWithKeyDynAttr_
@@ -87,4 +89,3 @@ selectViewListWithKeyDynAttr_
   -> m (Event t k)
 selectViewListWithKeyDynAttr_ selection vals attrs mkChild =
   fmap fst <$> selectViewListWithKeyDynAttr selection vals attrs mkChild
-

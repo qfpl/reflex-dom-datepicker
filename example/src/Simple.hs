@@ -20,7 +20,6 @@ import qualified Data.Time                                as Time
 #ifndef ghcjs_HOST_OS
 import           Language.Javascript.JSaddle.Warp         (run)
 import           Reflex.Dom.Core                          (mainWidget)
--- import Util.Run
 #endif
 
 -- From Data.Time
@@ -85,4 +84,3 @@ main =
 #else
   run 9999 $ mainWidget simpleDatePickerUsage
 #endif
-

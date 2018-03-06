@@ -1,6 +1,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
+-- | Functions for the display and selection of the individual day in the
+-- currently selected month.
 module Reflex.Dom.Widget.Input.Datepicker.DaySelect
   ( mkDaySelectDisplay
   , dayDynEl

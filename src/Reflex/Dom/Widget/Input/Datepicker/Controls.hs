@@ -1,6 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
+-- | These are the input controls for the datepicker:
 module Reflex.Dom.Widget.Input.Datepicker.Controls
   ( moveMonthBtn
   , mkDatePickerControls

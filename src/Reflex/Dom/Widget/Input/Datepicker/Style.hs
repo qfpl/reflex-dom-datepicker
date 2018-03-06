@@ -1,5 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
+-- | Some wrapper \<div\> functions that come preloaded with styles that can be
+-- combined with the built-in CSS file for some functional ableit spartan styling.
 module Reflex.Dom.Widget.Input.Datepicker.Style
   ( monthButtonAttrs
   , monthButtonWrap

@@ -4,9 +4,9 @@ synopsis:            A date picker UI widget for the reflex FRP platform.
 description:         A date picker widget to be used with the Reflex FRP system, either for GHC/GHCJS. Example expects GHCJS.
 license:             BSD3
 license-file:        LICENCE
-author:              QFPL @ Data61
-maintainer:          sean.chalmers@data61.csiro.au
-copyright:           Copyright (C) 2017 Commonwealth Scientific and Industrial Research Organisation (CSIRO)
+author:              Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+maintainer:          Queensland Functional Programming Lab <oᴉ˙ldɟb@llǝʞsɐɥ>
+copyright:           Copyright (c) 2018, Commonwealth Scientific and Industrial Research Organisation (CSIRO) ABN 41 687 119 230.
 category:            FRP,Web
 build-type:          Simple
 cabal-version:       >=1.10
@@ -16,11 +16,7 @@ source-repository   head
   location:         git@github.com/qfpl/reflex-dom/reflex-dom-datepicker.git
 
 library
-  if impl(ghcjs -any)
-    ghc-options:       -Wall -dedupe
-    cpp-options:       -DGHCJS_BROWSER
-  else
-    ghc-options:       -Wall
+  ghc-options:       -Wall -fwarn-tabs -funbox-strict-fields
 
   exposed-modules:     Reflex.Dom.Widget.Input.Datepicker
                      , Reflex.Dom.Widget.Input.Datepicker.Style
@@ -34,35 +30,10 @@ library
                      , text >= 1.2 && < 1.3
                      , reflex >= 0.5 && < 0.6
                      , reflex-dom >= 0.4 && < 0.5
-                     , ghcjs-dom 
+                     , ghcjs-dom
                      , lens
                      , containers == 0.5.*
                      , time == 1.6.*
 
   hs-source-dirs:      src
   default-language:    Haskell2010
-
-
-executable             examples
-  if impl(ghcjs -any)
-    ghc-options:       -Wall -dedupe
-    cpp-options:       -DGHCJS_BROWSER
-  else
-    ghc-options:       -Wall
-
-  default-language:    Haskell2010
-  hs-source-dirs:      example
-
-  main-is:             Simple.hs
-
-  build-depends:       base >=4.9 && <4.10
-                     , text >= 1.2 && < 1.3
-                     , reflex >= 0.5 && < 0.6
-                     , reflex-dom >= 0.4 && < 0.5
-                     , reflex-dom-datepicker
-                     , lens
-                     , time == 1.6.*
-  if !impl(ghcjs -any)
-    build-depends:
-                  jsaddle-warp
-                , reflex-dom-core

@@ -3,6 +3,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
 {-# LANGUAGE RecursiveDo           #-}
+-- | A date picker UI component, built using the Reflex FRP framework and
+-- Reflex-Dom components.
 module Reflex.Dom.Widget.Input.Datepicker
   ( datePickerSimple
   , datePickerWrappedWith

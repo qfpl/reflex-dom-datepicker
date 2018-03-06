@@ -18,20 +18,20 @@ let
       mkdir -p $out
 
       mkdir -p $out/js
-      cp $out/bin/examples.jsexe/all.js $out/js/examples.js
+      cp $out/bin/example.jsexe/all.js $out/js/example.js
 
       mkdir -p $out/css
       cp ./css/* $out/css/
 
-      ln -s $out/bin/examples.jsexe/index.html $out/index.html
+      ln -s $out/bin/example.jsexe/index.html $out/index.html
 
-      cd $out/bin/examples.jsexe
-      closure-compiler all.js --compilation_level=ADVANCED_OPTIMIZATIONS --isolation_mode=IIFE --assume_function_wrapper --jscomp_off="*" --externs=all.js.externs > $out/js/examples.min.js
-      rm -Rf $out/bin/examples.jsexe
+      cd $out/bin/example.jsexe
+      closure-compiler all.js --compilation_level=ADVANCED_OPTIMIZATIONS --isolation_mode=IIFE --assume_function_wrapper --jscomp_off="*" --externs=all.js.externs > $out/js/example.min.js
+      rm -Rf $out/bin/example.jsexe
       rm -Rf $out/bin
 
       cd $out/js
-      zopfli -i1000 examples.min.js
+      zopfli -i1000 example.min.js
 
       rm -Rf $out/lib
       rm -Rf $out/nix-support
@@ -44,6 +44,6 @@ let
     then adjust-for-ghcjs drv
     else drv;
 
-  basics = pkgs.haskell.lib.overrideCabal (haskellPackages.callPackage ./reflex-dom-datepicker.nix {}) adjust;
+  basics = pkgs.haskell.lib.overrideCabal (haskellPackages.callPackage ./example.nix {}) adjust;
 in
   basics
