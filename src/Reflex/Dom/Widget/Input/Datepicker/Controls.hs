@@ -1,3 +1,4 @@
+{-# LANGUAGE MonoLocalBinds        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
@@ -17,10 +18,8 @@ import           Data.Time                                (Day)
 
 import           Reflex                                   (Event)
 import           Reflex.Dom                               (MonadWidget, def,
-                                                           textInput,
-                                                           elDynAttr',
-                                                           text,
-                                                           domEvent,
+                                                           domEvent, elDynAttr',
+                                                           text, textInput,
                                                            textInputConfig_attributes,
                                                            textInputConfig_initialValue,
                                                            textInputConfig_setValue)

@@ -1,13 +1,19 @@
 {-# LANGUAGE CPP                   #-}
+{-# LANGUAGE MonoLocalBinds        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module Main where
+module Demo (demo) where
 
 import           Control.Lens                             ((.~))
 import           Control.Monad                            ((>>))
 
+import           Data.Foldable                            (traverse_)
+import qualified Data.Map                                 as Map
+
 import qualified Reflex                                   as R
-import qualified Reflex.Dom                               as RD
+
+import           Reflex.Dom.Core                          (MonadWidget, (=:))
+import qualified Reflex.Dom.Core                          as RD
 
 import qualified Reflex.Dom.Widget.Input.Datepicker       as D
 import           Reflex.Dom.Widget.Input.Datepicker.Types as D
@@ -15,12 +21,12 @@ import           Reflex.Dom.Widget.Input.Datepicker.Types as D
 import           Data.Function                            ((&))
 import qualified Data.Text                                as Text
 
+import           Data.Time                                (Day)
 import qualified Data.Time                                as Time
 
-#ifndef ghcjs_HOST_OS
-import           Language.Javascript.JSaddle.Warp         (run)
-import           Reflex.Dom.Core                          (mainWidget)
-#endif
+import           Language.Javascript.JSaddle.WebSockets   (debugOr)
+import           Network.Wai.Application.Static           (defaultWebAppSettings,
+                                                           staticApp)
 
 -- From Data.Time
 -- TimeZone
@@ -47,10 +53,23 @@ aust = Time.defaultTimeLocale
     ]
   }
 
+headSection :: RD.Widget x ()
+headSection = do
+  RD.el "title" $ RD.text "Date Demo"
+  RD.elAttr "meta" ("charset" =: "utf-8") RD.blank
+  RD.elAttr "meta" ("name" =: "viewport" <>
+                 "content" =: "width=device-width, initial-scale=1, shrink-to-fit=no") RD.blank
+  let
+    stylesheet s =
+      RD.elAttr "link" (Map.fromList [("rel", "stylesheet"), ("href", s)]) RD.blank
+
+  traverse_ stylesheet ["css/reflex-dom-datepicker.css"]
+
 simpleDatePickerUsage
-  :: RD.MonadWidget t m
-  => m ()
-simpleDatePickerUsage = do
+  :: MonadWidget t m
+  => Day
+  -> m ()
+simpleDatePickerUsage today = do
   -- Little page header
   RD.el "h1"
     $ RD.text "Simple Date Widget"
@@ -60,7 +79,7 @@ simpleDatePickerUsage = do
       Text.pack . Time.showGregorian
 
     cfg = D.simpleDateInputConfig aust
-      & D.dateInputConfig_initialValue .~ Time.fromGregorian 2017 2 3
+      & D.dateInputConfig_initialValue .~ today
 
   -- Place the simple date picker on the page. This is a "prebaked" widget that
   -- has a lot of the functionality built into a single component with some flexible styling.
@@ -77,10 +96,9 @@ simpleDatePickerUsage = do
   RD.el "h3" $
     RD.text "Date Value: " >> RD.dynText ( showDate <$> D._dateInput_value dateIn )
 
-main :: IO ()
-main =
-#ifdef ghcjs_HOST_OS
-  RD.mainWidget simpleDatePickerUsage
-#else
-  run 9999 $ mainWidget simpleDatePickerUsage
-#endif
+demo :: IO ()
+demo = do
+  today <- Time.utctDay <$> Time.getCurrentTime
+  debugOr 9999
+    (RD.mainWidgetWithHead headSection $ simpleDatePickerUsage today)
+    $ staticApp (defaultWebAppSettings "./.")

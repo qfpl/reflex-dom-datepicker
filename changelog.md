@@ -1,3 +1,10 @@
+0.1.0
+
+* Overhauled the nix expressions for handling the reflex-platform, much simpler now. 
+* Updated to more recent version of reflex/reflex-dom
+* Removed example project - integrated with main project to make development easier
+* add dev scripts to aid development
+
 0.0.3
 
 * Added more documentation

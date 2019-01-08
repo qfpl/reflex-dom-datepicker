@@ -1,5 +1,5 @@
 name:                reflex-dom-datepicker
-version:             0.0.3
+version:             0.1.0
 synopsis:            A date picker UI widget for the reflex FRP platform.
 description:         A date picker widget to be used with the Reflex FRP system, either for GHC/GHCJS. Example expects GHCJS.
 license:             BSD3
@@ -13,7 +13,7 @@ cabal-version:       >=1.10
 
 source-repository   head
   type:             git
-  location:         git@github.com/qfpl/reflex-dom/reflex-dom-datepicker.git
+  location:         git@github.com/qfpl/reflex-dom-datepicker.git
 
 library
   ghc-options:       -Wall -fwarn-tabs -funbox-strict-fields
@@ -26,14 +26,18 @@ library
                      , Reflex.Dom.Widget.Input.Datepicker.Types
                      , Reflex.Dom.Widget.Basic.SelectViews
 
-  build-depends:       base >=4.9 && <4.10
+                     , Demo
+
+  build-depends:       base >= 4.9 && <4.13
                      , text >= 1.2 && < 1.3
-                     , reflex >= 0.5 && < 0.6
-                     , reflex-dom >= 0.4 && < 0.5
+                     , reflex >= 0.5 && < 0.7
+                     , reflex-dom >= 0.4 && < 0.6
                      , ghcjs-dom
-                     , lens
-                     , containers == 0.5.*
-                     , time == 1.6.*
+                     , jsaddle-warp
+                     , wai-app-static
+                     , lens > 4 && < 5
+                     , containers >= 0.5 && < 0.7
+                     , time >= 1.6
 
   hs-source-dirs:      src
   default-language:    Haskell2010

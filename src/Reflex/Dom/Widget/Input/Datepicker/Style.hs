@@ -1,3 +1,4 @@
+{-# LANGUAGE MonoLocalBinds        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 -- | Some wrapper \<div\> functions that come preloaded with styles that can be

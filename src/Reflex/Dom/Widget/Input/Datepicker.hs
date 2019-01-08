@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE MonoLocalBinds        #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE RankNTypes            #-}
@@ -14,11 +15,12 @@ module Reflex.Dom.Widget.Input.Datepicker
 
 import           Control.Lens                                 (to, (^.))
 
-import           Reflex                                       (Reflex, Event, Dynamic)
+import           Reflex                                       (Dynamic, Event,
+                                                               Reflex)
 import           Reflex.Dom                                   (MonadWidget)
 
 import qualified Reflex                                       as R
-import qualified Reflex.Dom                                   as RD
+import qualified Reflex.Dom.Core                              as RD
 
 import           Reflex.Dom.Widget.Input.Datepicker.Controls  as RDPControls
 import           Reflex.Dom.Widget.Input.Datepicker.Core      as RDPCore
@@ -26,7 +28,8 @@ import           Reflex.Dom.Widget.Input.Datepicker.DaySelect as RDPDaySelect
 import           Reflex.Dom.Widget.Input.Datepicker.Style     as RDPStyle
 import           Reflex.Dom.Widget.Input.Datepicker.Types     as RDPTypes
 
-import           Data.Time                                    (Day, fromGregorian)
+import           Data.Time                                    (Day,
+                                                               fromGregorian)
 import           Data.Time.Format                             (TimeLocale)
 
 -- | 'DateInputConfig' with some simple defaults and using the default CSS attribute maps from 'Reflex.Dom.Widget.Datepicker.Style'
