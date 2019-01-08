@@ -31,13 +31,12 @@ library
   build-depends:       base >= 4.9 && <4.13
                      , text >= 1.2 && < 1.3
                      , reflex >= 0.5 && < 0.7
-                     , reflex-dom >= 0.4 && < 0.6
-                     , ghcjs-dom
-                     , jsaddle-warp
-                     , wai-app-static
+                     , reflex-dom-core >= 0.4 && < 0.6
                      , lens > 4 && < 5
                      , containers >= 0.5 && < 0.7
                      , time >= 1.6
+                     , jsaddle-warp
+                     , wai-app-static
 
   hs-source-dirs:      src
   default-language:    Haskell2010

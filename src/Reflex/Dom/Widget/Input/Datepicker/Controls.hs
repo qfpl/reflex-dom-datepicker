@@ -17,14 +17,14 @@ import           Data.Text                                (Text)
 import           Data.Time                                (Day)
 
 import           Reflex                                   (Event)
-import           Reflex.Dom                               (MonadWidget, def,
+import           Reflex.Dom.Core                          (MonadWidget, def,
                                                            domEvent, elDynAttr',
                                                            text, textInput,
                                                            textInputConfig_attributes,
                                                            textInputConfig_initialValue,
                                                            textInputConfig_setValue)
 
-import qualified Reflex.Dom                               as RD
+import qualified Reflex.Dom.Core                          as RD
 
 import           Reflex.Dom.Widget.Input.Datepicker.Types (ControlW,
                                                            DateInputConfig,

@@ -15,7 +15,7 @@ module Reflex.Dom.Widget.Input.Datepicker.Style
   ) where
 
 import           Reflex                                   (Dynamic, Reflex)
-import           Reflex.Dom                               (MonadWidget,
+import           Reflex.Dom.Core                          (MonadWidget,
                                                            divClass, (=:))
 
 import           Data.Map                                 (Map)

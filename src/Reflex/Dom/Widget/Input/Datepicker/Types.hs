@@ -11,7 +11,7 @@ import           Control.Lens               (Rewrapped, Unwrapped, makeLenses,
                                              makeWrapped, (^.), _Wrapped)
 
 import           Reflex                     (Dynamic, Event, Reflex)
-import           Reflex.Dom                 (MonadWidget, TextInput)
+import           Reflex.Dom.Core            (MonadWidget, TextInput)
 
 import           Data.Map                   (Map)
 import           Data.Text                  (Text)

@@ -17,7 +17,7 @@ import           Control.Lens                                 (to, (^.))
 
 import           Reflex                                       (Dynamic, Event,
                                                                Reflex)
-import           Reflex.Dom                                   (MonadWidget)
+import           Reflex.Dom.Core                              (MonadWidget)
 
 import qualified Reflex                                       as R
 import qualified Reflex.Dom.Core                              as RD

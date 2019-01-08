@@ -11,10 +11,10 @@ module Reflex.Dom.Widget.Basic.SelectViews
 import           Control.Monad.Fix (MonadFix)
 
 import           Reflex            (Dynamic, Event)
-import           Reflex.Dom        (DomBuilder, MonadHold, PostBuild)
+import           Reflex.Dom.Core   (DomBuilder, MonadHold, PostBuild)
 
 import qualified Reflex            as R
-import qualified Reflex.Dom        as RD
+import qualified Reflex.Dom.Core   as RD
 
 import           Data.Map          (Map)
 import qualified Data.Map          as Map

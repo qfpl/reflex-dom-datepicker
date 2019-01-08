@@ -10,10 +10,10 @@ module Reflex.Dom.Widget.Input.Datepicker.DaySelect
   ) where
 
 import           Reflex                                   (Dynamic, Event, (<@))
-import           Reflex.Dom                               (MonadWidget)
+import           Reflex.Dom.Core                          (MonadWidget)
 
 import qualified Reflex                                   as R
-import qualified Reflex.Dom                               as RD
+import qualified Reflex.Dom.Core                          as RD
 
 import qualified Reflex.Dom.Widget.Basic.SelectViews      as SelectView
 
