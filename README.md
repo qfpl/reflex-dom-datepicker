@@ -36,9 +36,9 @@ The datepicker modules provide three primary pieces of the underlying widget:
 
 There is a simple example page included with this package.
 
-To build when on NixOS:
+To build if you have nix:
 ```bash
-$ nix-build examples.nix
+$ nix-build -A ghcjs.reflex-dom-datepicker
 ```
 
 When in a ``./try-reflex`` shell from [reflex-platform](https://github.com/reflex-frp/reflex-platform):
